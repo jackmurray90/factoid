@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block head %}
+  <script>
+    function update_slug() {
+      const title = document.getElementsByName('title')[0].value;
+      const slug = document.getElementsByName('slug')[0];
+      slug.value = title.replace(/[^A-Za-z0-9 ]/g, '').toLowerCase().split(/\s+/).join('-');
+    }
+  </script>
+{% endblock %}
+{% block content %}
+{% if message %}
+  <p>{{ message }}</p>
+{% endif %}
+<form action="/new_article" method="post">
+  {{ csrf|safe }}
+  <p><input name="title" size="50" placeholder="Title" onKeyUp="update_slug()"/></p>
+  <p><input name="slug" size="50" placeholder="Slug"/><p>
+  <p><input type="submit" value="Create Article"/></p>
+</form>
+{% endblock %}

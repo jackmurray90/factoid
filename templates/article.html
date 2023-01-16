@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block head %}
+  {% if article.markdown is none %}
+    <script>
+      async function refresh_if_ready() {
+        const response = await fetch('/article/{{ article.slug }}/ready');
+        const data = await response.json();
+        if (data.ready) location.reload();
+      }
+      setInterval(refresh_if_ready, 1000);
+    </script>
+  {% endif %}
+{% endblock %}
+{% block content %}
+  {% if message %}
+    <p>{{ message }}</p>
+  {% endif %}
+  <h2>{{ article.title }}</h2>
+  {{ html|safe }}
+  {% if article.markdown is none %}
+    <p>Loading... This usually takes under 10 seconds.</p>
+  {% endif %}
+  {% if logged_in %}
+    <form action="/article/{{ article.slug }}" method="post">
+      {{ csrf|safe }}
+      <p><input name="title" size="50" value="{{ article.title }}" placeholder="Title"/></p>
+      <p><input name="slug" size="50" value="{{ article.slug }}" placeholder="Slug"/></p>
+      <p><textarea name="markdown" rows="25" cols="50">{% if article.markdown is not none %}{{ article.markdown }}{% endif %}</textarea></p>
+      <p><input name="published" type="checkbox" value="true" {% if article.published %}checked{% endif %}/> Published?</p>
+      <p><input type="submit" value="Submit Changes"/></p>
+    </form>
+    <form action="/article/{{ article.slug }}/delete" method="post">
+      {{ csrf|safe }}
+      <p><input type="submit" value="Delete Article"/></p>
+    </form>
+  {% endif %}
+{% endblock %}

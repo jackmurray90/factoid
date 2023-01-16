@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% if message %}
+    <p>{{ message }}</p>
+  {% endif %}
+  <ul>
+    {% for article in articles %}
+      {% if article.published %}
+        <li><a href="/article/{{ article.slug }}">{{ article.title }}</a></li>
+      {% else %}
+        {% if logged_in %}
+          <li><a href="/article/{{ article.slug }}">{{ article.title }}</a> (draft)</li>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endblock %}
