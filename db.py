@@ -11,3 +11,4 @@ class Article(Base):
   title = Column(String)
   markdown = Column(Text)
   published = Column(Boolean)
+  views = Column(Integer, default=0)

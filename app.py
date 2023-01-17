@@ -72,8 +72,11 @@ def article(render_template, logged_in, slug):
       [article] = session.query(Article).where(Article.slug == slug)
     except:
       abort(404)
-    if not logged_in and not article.published:
-      abort(404)
+    if not logged_in:
+      if not article.published:
+        abort(404)
+      article.views += 1
+      session.commit()
     html = mistune.html(article.markdown)
     return render_template('article.html', article=article, html=html)
 
