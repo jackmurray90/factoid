@@ -3,7 +3,7 @@ from csrf import csrf
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from config import DATABASE, API_KEY, OPENAI_API_KEY
-from db import Article
+from db import Article, Referrer
 from threading import Thread
 import re
 import mistune
@@ -19,6 +19,7 @@ def is_valid_slug(slug):
 
 @get('/')
 def index(render_template, logged_in):
+  if not logged_in: log_referrer()
   with Session(engine) as session:
     return render_template('index.html', articles=session.query(Article).order_by(Article.views.desc()).all())
 
@@ -28,6 +29,12 @@ def sitemap(render_template, logged_in):
     response = render_template('sitemap.xml', articles=session.query(Article).where(Article.published == True))
     response.headers['Content-Type'] = 'text/xml'
     return response
+
+@get('/referrers')
+def referrers(render_template, logged_in):
+  if not logged_in: return redirect('/')
+  with Session(engine) as session:
+    return render_template('referrers.html', referrers=session.query(Referrer).order_by(Referrer.count.desc()).all())
 
 @get('/login')
 def login(render_template, logged_in):
@@ -73,6 +80,7 @@ def new_article(redirect, logged_in):
 
 @get('/article/<slug>')
 def article(render_template, logged_in, slug):
+  if not logged_in: log_referrer()
   with Session(engine) as session:
     try:
       [article] = session.query(Article).where(Article.slug == slug)
@@ -131,3 +139,17 @@ def article_delete(redirect, logged_in, slug):
     session.delete(article)
     session.commit()
     return redirect('/', 'The article was deleted.')
+
+def log_referrer():
+  try:
+    referrer_hostname = re.match('https?://([^/]*)', request.referrer).group(1)
+  except:
+    referrer_hostname = 'unknown'
+  with Session(engine) as session:
+    try:
+      [ref] = session.query(Referrer).where(Referrer.hostname == referrer_hostname)
+      ref.count += 1
+      session.commit()
+    except:
+      session.add(Referrer(hostname=referrer_hostname, count=1))
+      session.commit()

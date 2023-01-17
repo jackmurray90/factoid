@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% if message %}
+    <p>{{ message }}</p>
+  {% endif %}
+  <table>
+    <tr><th>Hostname</th><th>Count</th></tr>
+    {% for referrer in referrers %}
+      <tr><td>{{ referrer.hostname }}</td><td>{{ referrer.count }}</td></tr>
+    {% endfor %}
+  </table>
+{% endblock %}

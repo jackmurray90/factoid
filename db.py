@@ -12,3 +12,9 @@ class Article(Base):
   markdown = Column(Text)
   published = Column(Boolean)
   views = Column(Integer, default=0)
+
+class Referrer(Base):
+  __tablename__ = 'referrers'
+
+  hostname = Column(String, primary_key=True)
+  count = Column(Integer)
