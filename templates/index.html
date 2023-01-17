@@ -3,15 +3,19 @@
   {% if message %}
     <p>{{ message }}</p>
   {% endif %}
-  <ul>
+  <table>
+    <tr><th>Article</th><th>Views</th></tr>
     {% for article in articles %}
       {% if article.published %}
-        <li><a href="/article/{{ article.slug }}">{{ article.title }}</a></li>
+        <tr>
+          <td><a href="/article/{{ article.slug }}">{{ article.title }}</a></td>
+          <td>{{ article.views }}</td>
+        </tr>
       {% else %}
         {% if logged_in %}
-          <li><a href="/article/{{ article.slug }}">{{ article.title }}</a> (draft)</li>
+          <tr><td><a href="/article/{{ article.slug }}">{{ article.title }}</a></td><td>draft</td></tr>
         {% endif %}
       {% endif %}
     {% endfor %}
-  </ul>
+  </table>
 {% endblock %}

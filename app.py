@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from config import DATABASE, API_KEY, OPENAI_API_KEY
 from db import Article
 from threading import Thread
+import re
 import mistune
 import openai
 
@@ -13,10 +14,13 @@ engine = create_engine(DATABASE)
 openai.api_key = OPENAI_API_KEY
 get, post = csrf(app)
 
+def is_valid_slug(slug):
+  return not re.search('[^a-z-]', slug)
+
 @get('/')
 def index(render_template, logged_in):
   with Session(engine) as session:
-    return render_template('index.html', articles=session.query(Article).all())
+    return render_template('index.html', articles=session.query(Article).order_by(Article.views.desc()).all())
 
 @get('/sitemap.xml')
 def sitemap(render_template, logged_in):
@@ -45,6 +49,8 @@ def new_article(render_template, logged_in):
 @post('/new_article')
 def new_article(redirect, logged_in):
   if not logged_in: return redirect('/')
+  if not is_valid_slug(request.form['slug']):
+    return redirect('/new_article', 'Invalid slug.')
   with Session(engine) as session:
     try:
       [article] = session.query(Article).where(Article.slug == request.form['slug'])
@@ -105,6 +111,8 @@ def article(redirect, logged_in, slug):
         return redirect(f'/article/{slug}', "Another article with that slug already exists.")
     except:
       pass
+    if not is_valid_slug(request.form['slug']):
+      return redirect(f'/article/{slug}', 'Invalid slug.')
     article.title = request.form['title']
     article.slug = request.form['slug']
     article.markdown = request.form['markdown']
