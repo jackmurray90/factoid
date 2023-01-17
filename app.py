@@ -73,7 +73,10 @@ def new_article(redirect, logged_in):
         [article] = session.query(Article).where(Article.slug == slug)
       except:
         return
-      article.markdown = openai.Completion.create(model="text-davinci-003", prompt='Write a blog post answering the following question: ' + title, max_tokens=1024, temperature=0)["choices"][0]["text"]
+      try:
+        article.markdown = openai.Completion.create(model="text-davinci-003", prompt='Write a blog post answering the following question: ' + title, max_tokens=1024, temperature=0)["choices"][0]["text"]
+      except:
+        article.markdown = 'There was an error generating the article. Please delete the article and try again.'
       session.commit()
   Thread(target=target, args=(request.form['title'], request.form['slug'])).start()
   return redirect(f"/article/{request.form['slug']}")
