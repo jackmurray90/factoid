@@ -15,7 +15,7 @@ openai.api_key = OPENAI_API_KEY
 get, post = csrf(app)
 
 def is_valid_slug(slug):
-  return not re.search('[^a-z-]', slug)
+  return len(slug) >= 1 and not re.search('[^a-z0-9-]', slug)
 
 @get('/')
 def index(render_template, logged_in):
