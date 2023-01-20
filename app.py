@@ -5,13 +5,14 @@ from sqlalchemy import create_engine
 from config import DATABASE, API_KEY, OPENAI_API_KEY
 from db import Article, Referrer
 from threading import Thread
+from mistune import create_markdown
 import re
-import mistune
 import openai
 
 app = Flask(__name__)
 engine = create_engine(DATABASE)
 openai.api_key = OPENAI_API_KEY
+markdown = create_markdown()
 get, post = csrf(app)
 
 def is_valid_slug(slug):
@@ -94,7 +95,7 @@ def article(render_template, logged_in, slug):
         abort(404)
       article.views += 1
       session.commit()
-    html = mistune.html(article.markdown)
+    html = markdown(article.markdown)
     return render_template('article.html', article=article, html=html)
 
 @get('/article/<slug>/ready')
