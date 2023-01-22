@@ -32,8 +32,8 @@
 <div id="nav">
   <a href="/{{ tr['language'] }}/">{{ tr['new_question'] }}</a>
   <a href="/{{ tr['language'] }}/browse">{{ tr['browse_questions'] }}</a>
-  <a href="/{{ tr['language'] }}/mine">{{ tr['my_questions'] }}</a>
   {% if user %}
+    <a href="/{{ tr['language'] }}/mine">{{ tr['my_questions'] }}</a>
     {% if user.admin %}
       <a href="/{{ tr['language'] }}/referrers">{{ tr['referrers'] }}</a>
     {% endif %}
