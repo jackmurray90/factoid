@@ -37,7 +37,6 @@
     {% if user.admin %}
       <a href="/{{ tr['language'] }}/referrers">{{ tr['referrers'] }}</a>
     {% endif %}
-    <a href="/{{ tr['language'] }}/settings">{{ tr['settings'] }}</a>
     <a href="/{{ tr['language'] }}/about">{{ tr['about'] }}</a>
     <form action="/{{ tr['language'] }}/logout" method="post">
       {{ csrf|safe }}
