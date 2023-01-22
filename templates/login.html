@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if message %}
-  <p>{{ message }}</p>
-{% endif %}
-<form action="/login" method="post">
-  <input name="api_key" placeholder="API Key"/>
-  <input type="submit" value="Log In"/>
+<form class="center" action="" method="post">
+  {% if message %}
+    <p>{{ message }}</p>
+  {% endif %}
+  {{ csrf|safe }}
+  <p><input name="email" placeholder="{{ tr['email_address'] }}"/></p>
+  <p><input type="submit" value="{% if register %}{{ tr['sign_up'] }}{% else %}{{ tr['login'] }}{% endif %}"/></p>
 </form>
 {% endblock %}

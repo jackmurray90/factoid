@@ -3,3 +3,4 @@ mistune
 sqlalchemy
 psycopg2
 openai
+python-bitcoinrpc
