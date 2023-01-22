@@ -32,18 +32,19 @@
 <div id="nav">
   <a href="/{{ tr['language'] }}/">{{ tr['new_question'] }}</a>
   <a href="/{{ tr['language'] }}/browse">{{ tr['browse_questions'] }}</a>
-  <a href="/{{ tr['language'] }}/about">{{ tr['about'] }}</a>
   {% if user %}
     <a href="/{{ tr['language'] }}/mine">{{ tr['my_questions'] }}</a>
     {% if user.admin %}
       <a href="/{{ tr['language'] }}/referrers">{{ tr['referrers'] }}</a>
     {% endif %}
     <a href="/{{ tr['language'] }}/settings">{{ tr['settings'] }}</a>
+    <a href="/{{ tr['language'] }}/about">{{ tr['about'] }}</a>
     <form action="/{{ tr['language'] }}/logout" method="post">
       {{ csrf|safe }}
       <input type="submit" value="{{ tr['logout'] }}"/>
     </form>
   {% else %}
+    <a href="/{{ tr['language'] }}/about">{{ tr['about'] }}</a>
     <a href="/{{ tr['language'] }}/register">{{ tr['sign_up'] }}</a>
     <a href="/{{ tr['language'] }}/login">{{ tr['login'] }}</a>
   {% endif %}
