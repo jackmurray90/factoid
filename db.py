@@ -10,8 +10,14 @@ class Question(Base):
   slug = Column(String)
   question = Column(String)
   answer = Column(Text)
-  views = Column(Integer, default=0)
   user = relationship('User')
+
+class View(Base):
+  __tablename__ = 'views'
+  id = Column(Integer, primary_key=True)
+  question_id = Column(Integer, ForeignKey('questions.id'))
+  remote_address = Column(String)
+  timestamp = Column(Integer)
 
 class User(Base):
   __tablename__ = 'users'

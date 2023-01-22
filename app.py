@@ -5,7 +5,7 @@ from hashlib import sha256
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from config import DATABASE, OPENAI_API_KEY
-from db import Question, Referrer, User, LoginCode
+from db import Question, Referrer, User, LoginCode, View
 from threading import Thread
 from mistune import create_markdown
 from time import time, sleep
@@ -201,8 +201,12 @@ def question(render_template, user, tr, slug):
       [question] = session.query(Question).where(Question.slug == slug)
     except:
       abort(404)
-    question.views += 1
-    session.commit()
+    view = session.query(View).filter((View.question_id == question.id) & (View.remote_address == request.remote_addr)).first()
+    if view is None:
+      view = View(question_id=question.id, remote_address=request.remote_addr, timestamp=0)
+    if view.timestamp + 60*60*24 < time():
+      session.add(View(question_id=question.id, remote_address=request.remote_addr, timestamp=int(time())))
+      session.commit()
     html = markdown(question.answer)
     return render_template('question.html', question=question, html=html)
 
