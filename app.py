@@ -10,6 +10,7 @@ from threading import Thread
 from mistune import create_markdown
 from time import time, sleep
 from mail import send_email
+from bitcoin import validate_address
 import re
 import openai
 
@@ -122,6 +123,22 @@ def logout(redirect, user, tr):
   response = redirect('/')
   response.set_cookie('api_key', '', expires=0)
   return response
+
+@get('/settings')
+def settings(render_template, user, tr):
+  if not user: return redirect('/')
+  return render_template('settings.html')
+
+@post('/settings')
+def settings(redirect, user, tr):
+  if not user: return redirect('/')
+  if not validate_address(request.form['payout_address']):
+    return redirect('/settings', tr['invalid_address'])
+  with Session(engine) as session:
+    [user] = session.query(User).where(User.id == user.id)
+    user.payout_address = request.form['payout_address']
+    session.commit()
+  return redirect('/settings', tr['address_saved'])
 
 @post('/')
 def new_question(redirect, user, tr):
