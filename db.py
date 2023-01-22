@@ -3,15 +3,6 @@ from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
-class Article(Base):
-  __tablename__ = 'articles'
-  id = Column(Integer, primary_key=True)
-  slug = Column(String)
-  title = Column(String)
-  markdown = Column(Text)
-  published = Column(Boolean)
-  views = Column(Integer, default=0)
-
 class Question(Base):
   __tablename__ = 'questions'
   id = Column(Integer, primary_key=True)
