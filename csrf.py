@@ -42,7 +42,7 @@ def csrf(app, engine):
           if user and request.form['csrf'] != api_key:
             abort(403)
           def r(path_, message=''):
-            response = make_response(redirect(('' if language == default_language else f'/{language}') + path_))
+            response = make_response(redirect(f'/{language}' + path_))
             response.set_cookie('message', message)
             return response
           return f(r, user, tr[language], *args, **kwargs)
