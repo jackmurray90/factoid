@@ -39,7 +39,8 @@ tr = {
     'referrers': "Referrers",
     'settings': "Settings",
     'logout': "Logout",
-    'sign_up': "Sign Up"
+    'sign_up': "Sign Up",
+    'no_questions': "You haven't asked any questions yet."
   }
 }
 
