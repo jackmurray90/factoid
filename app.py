@@ -36,6 +36,11 @@ def new_question(render_template, user, tr):
   log_referrer()
   return render_template('new_question.html')
 
+@get('/about')
+def about(render_template, user, tr):
+  log_referrer()
+  return render_template('about.html')
+
 @get('/sitemap.xml')
 def sitemap(render_template, user, tr):
   with Session(engine) as session:
