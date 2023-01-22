@@ -181,6 +181,12 @@ def mine(render_template, user, tr):
   with Session(engine) as session:
     return render_template('browse.html', questions=session.query(Question).where(Question.user_id == user.id).order_by(Question.views.desc()).all())
 
+@get('/article/<slug>')
+def question(render_template, user, tr, slug):
+  log_referrer()
+  if not is_valid_slug(slug): abort(404)
+  return redirect(f'/question/{slug}')
+
 @get('/question/<slug>')
 def question(render_template, user, tr, slug):
   log_referrer()
