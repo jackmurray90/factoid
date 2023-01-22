@@ -25,8 +25,8 @@ slug_special_chars = '?.,/&!?\'"<>'
 def is_valid_slug(slug):
   return len(slug) >= 1 and len(slug) <= 300 and not re.search(f'[{slug_special_chars}]', slug)
 
-def make_slug(title):
-  return re.sub('\s+', '-', re.sub(f'[{slug_special_chars}]', '', title)).lower()
+def make_slug(question):
+  return re.sub('\s+', '-', re.sub(f'[{slug_special_chars}]', '', question)).lower()
 
 def hash(salt, s):
   return sha256((salt + s).encode('utf-8')).hexdigest()
@@ -142,8 +142,8 @@ def settings(redirect, user, tr):
 
 @post('/')
 def new_question(redirect, user, tr):
-  q = request.form['question']
-  slug = make_slug(request.form['question'])
+  q = request.form['question'].strip()
+  slug = make_slug(q)
   if not is_valid_slug(slug):
     return redirect('/', tr['invalid_question'])
   if len(q) > 300:
@@ -178,13 +178,13 @@ def new_question(redirect, user, tr):
 @get('/browse')
 def browse(render_template, user, tr):
   with Session(engine) as session:
-    return render_template('browse.html', questions=session.query(Question).order_by(Question.views.desc()).all())
+    return render_template('browse.html', questions=session.query(Question).order_by(Question.id.desc()).all())
 
 @get('/mine')
 def mine(render_template, user, tr):
   if not user: return redirect('/')
   with Session(engine) as session:
-    return render_template('browse.html', questions=session.query(Question).where(Question.user_id == user.id).order_by(Question.views.desc()).all())
+    return render_template('browse.html', questions=session.query(Question).where(Question.user_id == user.id).order_by(Question.id.desc()).all())
 
 @get('/article/<slug>')
 def question(render_template, user, tr, slug):
