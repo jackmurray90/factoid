@@ -4,8 +4,6 @@ tr = {
     'ask_question_button': "Ask question",
     'email_address': "E-mail Address",
     'login': "Log In",
-    'email': "E-mail",
-    'password': "Password",
     'verification_email_subject': 'Verify your e-mail.',
     'verify_your_email': 'Please verify your e-mail by clicking the link we sent to %s.',
     'verification_email_header': 'Welcome to Factoid.ai',
