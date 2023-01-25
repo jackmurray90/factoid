@@ -8,7 +8,7 @@
   {% else %}
     <ul>
       {% for question in questions %}
-        <li><a href="/{{ tr['language'] }}/question/{{ question.slug }}">{{ question.question }}</a></li>
+        <li><a href="/question/{{ question.slug }}">{{ question.question }}</a></li>
       {% endfor %}
     </ul>
   {% endif %}

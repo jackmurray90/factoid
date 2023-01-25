@@ -30,23 +30,23 @@
 {% block head %}{% endblock %}
 <title>Factoid</title>
 <div id="nav">
-  <a href="/{{ tr['language'] }}/">{{ tr['new_question'] }}</a>
-  <a href="/{{ tr['language'] }}/browse">{{ tr['browse_questions'] }}</a>
+  <a href="/">{{ tr['new_question'] }}</a>
+  <a href="/browse">{{ tr['browse_questions'] }}</a>
   {% if user %}
-    <a href="/{{ tr['language'] }}/mine">{{ tr['my_questions'] }}</a>
+    <a href="/mine">{{ tr['my_questions'] }}</a>
     {% if user.admin %}
-      <a href="/{{ tr['language'] }}/referrers">{{ tr['referrers'] }}</a>
+      <a href="/referrers">{{ tr['referrers'] }}</a>
     {% endif %}
-    <a href="/{{ tr['language'] }}/settings">{{ tr['settings'] }}</a>
-    <a href="/{{ tr['language'] }}/about">{{ tr['about'] }}</a>
-    <form action="/{{ tr['language'] }}/logout" method="post">
+    <a href="/settings">{{ tr['settings'] }}</a>
+    <a href="/about">{{ tr['about'] }}</a>
+    <form action="/logout" method="post">
       {{ csrf|safe }}
       <input type="submit" value="{{ tr['logout'] }}"/>
     </form>
   {% else %}
-    <a href="/{{ tr['language'] }}/about">{{ tr['about'] }}</a>
-    <a href="/{{ tr['language'] }}/register">{{ tr['sign_up'] }}</a>
-    <a href="/{{ tr['language'] }}/login">{{ tr['login'] }}</a>
+    <a href="/about">{{ tr['about'] }}</a>
+    <a href="/register">{{ tr['sign_up'] }}</a>
+    <a href="/login">{{ tr['login'] }}</a>
   {% endif %}
 </div>
 <h1>Factoid</h1>

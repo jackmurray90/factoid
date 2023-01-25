@@ -44,7 +44,7 @@ def about(render_template, user, tr):
 @get('/sitemap.xml')
 def sitemap(render_template, user, tr):
   with Session(engine) as session:
-    response = render_template('sitemap.xml', articles=session.query(Question).all())
+    response = render_template('sitemap.xml', questions=session.query(Question).all())
     response.headers['Content-Type'] = 'text/xml'
     return response
 
@@ -90,7 +90,7 @@ def login(render_template, user, tr, code):
     user.email_verified = True
     session.delete(login_code)
     session.commit()
-    response = make_response(redirect(f'/{tr["language"]}/'))
+    response = make_response(redirect('/'))
     response.set_cookie('api_key', user.api_key)
     return response
 

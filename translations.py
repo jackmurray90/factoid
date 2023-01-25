@@ -1,6 +1,5 @@
 tr = {
   'en': {
-    'language': 'en',
     'example_question': "What is the meaning of life?",
     'ask_question_button': "Ask question",
     'email_address': "E-mail Address",
@@ -48,5 +47,3 @@ tr = {
 }
 
 accepted_languages = list(tr.keys())
-
-default_language = 'en'
