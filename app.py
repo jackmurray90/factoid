@@ -1,7 +1,6 @@
 from flask import Flask, request, redirect, abort, render_template, make_response
 from csrf import csrf
 from util import random_128_bit_string
-from hashlib import sha256
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from config import DATABASE, OPENAI_API_KEY
@@ -27,9 +26,6 @@ def is_valid_slug(slug):
 
 def make_slug(question):
   return re.sub('\s+', '-', re.sub(f'[{slug_special_chars}]', '', question)).lower()
-
-def hash(salt, s):
-  return sha256((salt + s).encode('utf-8')).hexdigest()
 
 @get('/')
 def new_question(render_template, user, tr):
