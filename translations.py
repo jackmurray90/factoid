@@ -48,3 +48,5 @@ tr = {
 }
 
 accepted_languages = list(tr.keys())
+
+default_language = 'en'
