@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<form class="center" action="/login" method="post">
+<form class="center" action="{% if register %}/register{% else %}/login{% endif %}" method="post">
   {% if message %}
     <p>{{ message }}</p>
   {% endif %}
