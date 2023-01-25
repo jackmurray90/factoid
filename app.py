@@ -34,7 +34,8 @@ def hash(salt, s):
 @get('/')
 def new_question(render_template, user, tr):
   log_referrer()
-  return render_template('new_question.html')
+  with Session(engine) as session:
+    return render_template('new_question.html', questions=session.query(Question).order_by(Question.id.desc()).limit(20).all())
 
 @get('/about')
 def about(render_template, user, tr):
